@@ -1,0 +1,97 @@
+.stage {
+  --goose-ink: var(--ink);
+  --goose-fill: var(--paper);
+  --goose-beak: var(--beak);
+  --goose-sweat: #8fc7ef;
+
+  position: relative;
+  width: 100%;
+  max-width: 34rem;
+  margin: 0 auto;
+  touch-action: none; /* we handle the drag ourselves */
+  user-select: none;
+}
+
+.svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+/* The real cursor is hidden over the stage and replaced by .hand. */
+.stageHidesCursor {
+  cursor: none;
+}
+
+.hand {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 44px;
+  height: 44px;
+  pointer-events: none;
+  z-index: 20;
+  will-change: transform;
+}
+
+.handIdle {
+  animation: handBob 1.9s ease-in-out infinite;
+}
+
+@keyframes handBob {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 -4px;
+  }
+}
+
+.grabHere {
+  font-family: var(--font-hand);
+  font-size: 26px;
+  fill: var(--ink);
+}
+
+.tileText {
+  font-family: var(--font-hand);
+  font-weight: 700;
+  font-size: 22px;
+  fill: var(--ink);
+}
+
+.hitZone {
+  fill: transparent;
+  stroke: none;
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.skip {
+  background: none;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--ink-soft);
+  font: inherit;
+  font-size: 0.82rem;
+  padding: 0.35rem 0.9rem;
+  cursor: pointer;
+}
+
+.skip:hover {
+  color: var(--ink);
+  border-color: var(--ink-soft);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .handIdle {
+    animation: none;
+  }
+}
