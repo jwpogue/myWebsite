@@ -1,0 +1,66 @@
+.list {
+  list-style: none;
+  margin: 2rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 1.25rem;
+}
+
+.card {
+  max-width: none;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--paper-2);
+  padding: 1.25rem 1.4rem;
+}
+
+.cardHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.cardTitle {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.year {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+}
+
+.blurb {
+  margin: 0.5rem 0 0.9rem;
+  color: var(--ink-soft);
+}
+
+.stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.tag {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.02em;
+  padding: 0.2rem 0.5rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--ink-soft);
+}
+
+.links {
+  margin: 0.9rem 0 0;
+  font-size: 0.9rem;
+}
+
+.links:empty {
+  display: none;
+}

@@ -1,0 +1,68 @@
+.shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+}
+
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.5rem;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 1.25rem var(--gutter);
+  border-bottom: 1px solid var(--line);
+}
+
+.brand {
+  font-weight: 700;
+  font-size: 1.05rem;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+}
+
+.navList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1.25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.navLink {
+  text-decoration: none;
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+  padding-bottom: 2px;
+  border-bottom: 2px solid transparent;
+  transition: color 120ms ease;
+}
+
+.navLink:hover {
+  color: var(--ink);
+}
+
+.navLinkActive {
+  color: var(--ink);
+  border-bottom-color: var(--beak);
+}
+
+.main {
+  flex: 1;
+  width: 100%;
+  max-width: 62rem;
+  margin: 0 auto;
+  padding: clamp(2rem, 5vw, 3.5rem) var(--gutter) 4rem;
+}
+
+.footer {
+  border-top: 1px solid var(--line);
+  padding: 1.5rem var(--gutter);
+}
+
+.footerText {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}

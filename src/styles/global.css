@@ -1,0 +1,142 @@
+/* ---------------------------------------------------------------
+   Design tokens. Paper-white, ink-black, one goose-beak orange.
+   --------------------------------------------------------------- */
+:root {
+  --paper: #faf6ef;
+  --paper-2: #f3ece0;
+  --ink: #1b1a17;
+  --ink-soft: #5a564e;
+  --beak: #f4a01f;
+  --beak-deep: #d97d06;
+  --line: #e0d7c7;
+
+  --font-body:
+    ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Inter, Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+  /* Swap for a real handwriting webfont once chosen — see docs/ART-ASSETS.md */
+  --font-hand: 'Comic Sans MS', 'Chalkboard SE', 'Bradley Hand', cursive;
+
+  --measure: 68ch;
+  --gutter: clamp(1.25rem, 4vw, 3rem);
+
+  --radius: 10px;
+  --shadow: 0 2px 0 var(--ink);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #16151a;
+    --paper-2: #1f1e25;
+    --ink: #f2ede3;
+    --ink-soft: #a8a296;
+    --line: #33313b;
+    --shadow: 0 2px 0 rgba(0, 0, 0, 0.6);
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: clamp(1rem, 0.95rem + 0.2vw, 1.075rem);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: clamp(2rem, 1.4rem + 3vw, 3.25rem);
+  margin: 0 0 0.5em;
+}
+
+h2 {
+  font-size: clamp(1.35rem, 1.1rem + 1.2vw, 1.85rem);
+  margin: 2.25em 0 0.6em;
+}
+
+p,
+li {
+  max-width: var(--measure);
+}
+
+a {
+  color: inherit;
+  text-decoration-color: var(--beak);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+
+a:hover {
+  color: var(--beak-deep);
+}
+
+code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  background: var(--paper-2);
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
+}
+
+:focus-visible {
+  outline: 3px solid var(--beak);
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+
+/* Screen-reader-only, but focusable (used by the skip link). */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.visually-hidden:focus {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  width: auto;
+  height: auto;
+  margin: 0;
+  padding: 0.6rem 1rem;
+  clip: auto;
+  z-index: 100;
+  background: var(--ink);
+  color: var(--paper);
+  border-radius: var(--radius);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
