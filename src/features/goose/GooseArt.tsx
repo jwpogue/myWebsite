@@ -9,7 +9,9 @@
  * See docs/ART-ASSETS.md for the exact spec the final art must satisfy.
  */
 
-export type Expression = 'idle' | 'happy' | 'annoyed' | 'alarmed';
+import type { BeakParts } from './beak';
+
+export type Expression = 'idle' | 'happy' | 'relieved' | 'annoyed' | 'alarmed';
 
 const INK = 'var(--goose-ink)';
 const FILL = 'var(--goose-fill)';
@@ -24,17 +26,42 @@ const stroke = {
 
 /* ------------------------------------------------------------------ head -- */
 
-export function GooseHead({ expression }: { expression: Expression }) {
-  const mouthOpen = expression === 'alarmed';
-
+export function GooseHead({
+  expression,
+  beak,
+}: {
+  expression: Expression;
+  beak?: { current: BeakParts };
+}) {
   return (
     <g>
       {/* skull */}
       <ellipse cx={0} cy={0} rx={22} ry={20} fill={FILL} {...stroke} />
 
-      {/* beak — points +x, i.e. the goose faces right */}
+      {/* beak — points +x, i.e. the goose faces right. Mouth first so the
+          jaws cover its edges. */}
       <path
-        d={mouthOpen ? 'M 18 -5 L 44 -9 L 24 1 L 42 6 L 18 8 Z' : 'M 18 -4 L 44 0 L 18 7 Z'}
+        ref={(node) => {
+          if (beak) beak.current.mouth = node;
+        }}
+        d="M 18 1.5 L 42 -10 L 41 14.5 Z"
+        fill="var(--goose-mouth)"
+        transform="scale(1 0)"
+      />
+      <path
+        ref={(node) => {
+          if (beak) beak.current.lower = node;
+        }}
+        d="M 18 1.5 L 44 0 L 18 7 Z"
+        fill={BEAK}
+        {...stroke}
+        strokeWidth={2.5}
+      />
+      <path
+        ref={(node) => {
+          if (beak) beak.current.upper = node;
+        }}
+        d="M 18 -4 L 44 0 L 18 1.5 Z"
         fill={BEAK}
         {...stroke}
         strokeWidth={2.5}
@@ -51,12 +78,33 @@ export function GooseHead({ expression }: { expression: Expression }) {
           <line x1={6} y1={-24} x2={10} y2={-32} />
         </g>
       )}
+
+      {/* relief: a flushed cheek and one last bead of sweat */}
+      {expression === 'relieved' && (
+        <g>
+          <ellipse cx={6} cy={7} rx={6} ry={3.4} fill="var(--goose-blush)" />
+          <g transform="translate(-20 -14) rotate(-20) scale(0.8)">
+            <SweatDrop />
+          </g>
+        </g>
+      )}
     </g>
   );
 }
 
 function Eye({ expression }: { expression: Expression }) {
   switch (expression) {
+    case 'relieved':
+      // eyes gently closed, drooping with relief
+      return (
+        <path
+          d="M 1 -6 q 7 6 15 1"
+          fill="none"
+          stroke={INK}
+          strokeWidth={2.6}
+          strokeLinecap="round"
+        />
+      );
     case 'happy':
       // closed, contented arc
       return (

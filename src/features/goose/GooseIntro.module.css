@@ -3,10 +3,17 @@
   --goose-fill: var(--paper);
   --goose-beak: var(--beak);
   --goose-sweat: #8fc7ef;
+  --goose-mouth: #8a2f14;
+  --goose-blush: rgb(240 120 110 / 0.45);
 
   position: relative;
-  width: 100%;
-  max-width: 34rem;
+  /* As wide as it can be while the floor still fits on screen under the
+     header, leaving room for the controls. Sizing the box (rather than
+     capping the SVG's height) keeps the SVG from letterboxing, so the copy
+     can be positioned in stage percentages. */
+  --stage-w: min(100%, 34rem, max(18rem, calc((100svh - 11rem) * var(--stage-aspect))));
+  width: min(100%, 34rem, max(18rem, calc((100vh - 11rem) * var(--stage-aspect))));
+  width: var(--stage-w);
   margin: 0 auto;
   touch-action: none; /* we handle the drag ourselves */
   user-select: none;
@@ -17,6 +24,100 @@
   width: 100%;
   height: auto;
   overflow: visible;
+}
+
+.canvas {
+  position: relative;
+}
+
+/* ---------------------------------------------------------------- copy -- */
+
+/* Hidden with no transition, so a replay resets it instantly... */
+.aside {
+  opacity: 0;
+  visibility: hidden;
+  translate: 0 0.6rem;
+}
+
+.aside h1 {
+  font-size: clamp(1.6rem, 1.2rem + 1.5vw, 2.2rem);
+}
+
+.aside p {
+  margin: 0 0 0.75em;
+}
+
+/* ...and faded in once the name is spelled out. */
+.asideShown {
+  opacity: 1;
+  visibility: visible;
+  translate: 0 0;
+  transition:
+    opacity 0.7s ease 0.25s,
+    translate 0.7s ease 0.25s;
+}
+
+/* Replay: each piece gets knocked off and falls out of the bottom of the
+   screen, with its own drift and spin. */
+.asideTumbling > * {
+  animation: tumble 1.1s forwards;
+  animation-delay: var(--delay, 0s);
+}
+
+.asideTumbling > :nth-child(1) {
+  --dx: -3rem;
+  --rot: -38deg;
+}
+
+.asideTumbling > :nth-child(2) {
+  --dx: 4rem;
+  --rot: 24deg;
+  --delay: 0.08s;
+}
+
+.asideTumbling > :nth-child(3) {
+  --dx: -1rem;
+  --rot: 52deg;
+  --delay: 0.16s;
+}
+
+@keyframes tumble {
+  0% {
+    translate: 0 0;
+    rotate: 0deg;
+    animation-timing-function: cubic-bezier(0.2, 0.6, 0.4, 1);
+  }
+  18% {
+    translate: calc(var(--dx, 0rem) * 0.15) -1.4rem;
+    rotate: calc(var(--rot, 20deg) * 0.1);
+    animation-timing-function: cubic-bezier(0.5, 0, 0.9, 0.5);
+  }
+  100% {
+    translate: var(--dx, 0rem) 110vh;
+    rotate: var(--rot, 20deg);
+  }
+}
+
+/* On narrow screens the copy follows the goose instead of sitting beside it.
+   On wide ones it sits under the tiles, and the goose breaks out of the
+   centred content column so its tail lines up with the logo in the header.
+   That means pulling back past the column's side margin (main is capped at
+   62rem in Layout.module.css) and then past the empty stage left of the tail. */
+@media (min-width: 60rem) {
+  .stageWithAside {
+    margin-left: calc(-1 * max(0px, (100vw - 62rem) / 2) - var(--stage-w) * var(--goose-left-edge));
+  }
+
+  .aside {
+    position: absolute;
+    width: 22rem;
+  }
+}
+
+.phew {
+  font-family: var(--font-hand);
+  font-size: 22px;
+  fill: var(--ink-soft);
 }
 
 /* The real cursor is hidden over the stage and replaced by .hand. */
@@ -85,7 +186,12 @@
   cursor: pointer;
 }
 
-.skip:hover {
+.skip:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.skip:hover:not(:disabled) {
   color: var(--ink);
   border-color: var(--ink-soft);
 }
@@ -93,5 +199,14 @@
 @media (prefers-reduced-motion: reduce) {
   .handIdle {
     animation: none;
+  }
+
+  .asideShown {
+    transition: none;
+  }
+
+  .asideTumbling > * {
+    animation: none;
+    opacity: 0;
   }
 }

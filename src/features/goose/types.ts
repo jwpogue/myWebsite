@@ -5,20 +5,33 @@ export type Phase =
   | 'patting'
   /** Body was clicked — ditto, but grumpier. */
   | 'tickling'
-  /** Neck is held; body position is driven by the pointer. */
+  /** Neck is held; gravity pulls the body down. */
   | 'grabbed'
-  /** Released past the commit point; gravity owns the body now. */
-  | 'falling'
-  /** Released before the commit point; spring pulls everything home. */
+  /** Let go before the body reached the floor; spring pulls everything home. */
   | 'snapping'
   /** Body has hit the floor; ripple plays. */
   | 'landing'
   /** Letters travel up the neck and arc out of the beak. */
   | 'delivering'
   /** Name is spelled out; goose is pleased with itself. */
-  | 'done';
+  | 'done'
+  /** Replay was pressed: tiles tumble away while the goose springs back up. */
+  | 'clearing';
 
-export type TileState = 'waiting' | 'ascending' | 'ejecting' | 'placed';
+export type TileState = 'waiting' | 'ascending' | 'ejecting' | 'placed' | 'tumbling';
+
+/** Free flight for a tile knocked off its slot by a replay. */
+export type Tumble = {
+  /** Seconds to wait before letting go, so the tiles don't all drop at once. */
+  delay: number;
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  /** Degrees, and degrees per second. */
+  angle: number;
+  spin: number;
+};
 
 export type Tile = {
   char: string;
@@ -35,4 +48,5 @@ export type Tile = {
   to: { x: number; y: number };
   /** Degrees of spin applied over the arc. */
   spin: number;
+  tumble: Tumble;
 };

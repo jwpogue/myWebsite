@@ -61,14 +61,10 @@ describe('stage bounds', () => {
 });
 
 describe('fall dynamics', () => {
-  it('commits somewhere sensible between the rest pose and the floor', () => {
-    expect(PHYSICS.commitY).toBeGreaterThan(REST.body.y);
-    expect(PHYSICS.commitY).toBeLessThan(PHYSICS.floorY);
-  });
-
   it('takes long enough to fall that the animation reads as heavy', () => {
-    // t = sqrt(2h/g), starting from rest at the commit point.
-    const h = PHYSICS.floorY - PHYSICS.commitY;
+    // t = sqrt(2h/g), starting from rest. It also has to be long enough that
+    // letting go part way down is a real choice.
+    const h = PHYSICS.floorY - REST.body.y;
     const seconds = Math.sqrt((2 * h) / PHYSICS.gravity);
     expect(seconds).toBeGreaterThan(0.25);
     expect(seconds).toBeLessThan(1.5);
